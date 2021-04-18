@@ -4,6 +4,6 @@
     name: "wg-quick@{{ wireguard_interface['name'] }}"
     state: 'reloaded'
   register: 'reloaded_wireguard'
-  until: reloaded_wireguard | succeeded
+  until: reloaded_wireguard is successful
   retries: 3 # When testing with Molecule in Docker, reloading doesn't always go in one go
   delay: 5
