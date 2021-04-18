@@ -24,3 +24,5 @@ are assembled to form /etc/wireguard/{{ interface }}.conf.
 
 NOTE: The templates for this role rely heavily on the Ansible inventory. Therefore
 the Ansible Controller _must_ know all private keys (protect them using Ansible Vault!)
+
+It will also require wireguard-tools to render the public keys.

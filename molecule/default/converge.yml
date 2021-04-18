@@ -5,3 +5,5 @@
     - name: 'Run role'
       include_role:
         name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
+  vars:
+    wireguard_molecule: true

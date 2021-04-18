@@ -12,6 +12,7 @@
     install_recommends: false
   delegate_to: 'localhost'
   run_once: true
+  when: wireguard_molecule is not defined # this task does not work in Molecule
 
 - name: 'Ensure Wireguard kernel module DKMS package'
   apt:

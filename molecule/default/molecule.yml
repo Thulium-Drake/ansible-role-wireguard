@@ -43,8 +43,6 @@ platforms:
 provisioner:
   name: 'ansible'
   inventory:
-    hosts:
-      localhost:
     host_vars:
       wireguard:
         wireguard_interface:
