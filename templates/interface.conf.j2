@@ -1,16 +1,16 @@
 # {{ ansible_managed }}
 [Interface]
-Address = {{ wireguard_interface['address'] }}
-{% if wireguard_interface['listen_port'] is defined %}
-ListenPort = {{ wireguard_interface['listen_port'] }}
+Address = {{ wg_int['address'] }}
+{% if wg_int['listen_port'] is defined %}
+ListenPort = {{ wg_int['listen_port'] }}
 {% endif -%}
-PrivateKey = {{ wireguard_interface['private_key'] }}
-{% if wireguard_interface['dns'] is defined %}
-DNS = {{ wireguard_interface['dns'] }}
+PrivateKey = {{ wg_int['private_key'] }}
+{% if wg_int['dns'] is defined %}
+DNS = {{ wg_int['dns'] }}
 {% endif -%}
 
 ###
 # Peers section
-# Place any manual peers in {{ wireguard_basedir }}/{{ wireguard_interface['address'] }}.conf.d
+# Place any manual peers in {{ wireguard_basedir }}/{{ wg_int['address'] }}.conf.d
 ###
 

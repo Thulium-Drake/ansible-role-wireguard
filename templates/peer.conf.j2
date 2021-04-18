@@ -1,14 +1,17 @@
 # {{ ansible_managed }}
-{% for peer in wireguard_interface['peers'] if not peer == inventory_hostname %}
+{% for peer in wg_peer['peers'] if not peer == inventory_hostname %}
+{% set peer_interface = hostvars[peer]['wireguard_interfaces'] | selectattr('name', '==', wg_peer['name']) | list | first %}
 [Peer]
 # {{ peer }}
-PublicKey = {{ lookup('pipe', 'echo ' + hostvars[peer]['wireguard_interface']['private_key'] | quote + ' | /usr/bin/wg pubkey') }}
-{% if wireguard_interface['listen_port'] is not defined %}
-Endpoint = {{ hostvars[peer]['wireguard_interface']['public_address'] }}:{{ hostvars[peer]['wireguard_interface']['listen_port'] }}
+PublicKey = {{ lookup('pipe', 'echo ' + peer_interface['private_key'] | quote + ' | /usr/bin/wg pubkey') }}
+{% if wg_peer['listen_port'] is not defined %}
+Endpoint = {{ peer_interface['public_address'] }}:{{ peer_interface['listen_port'] }}
 {% endif %}
-{% if hostvars[peer]['wireguard_interface']['preshared_key'] is defined or
-      wireguard_interface['preshared_key'] is defined -%}
-PreSharedKey = {{ wireguard_interface['preshared_key']| default(hostvars[peer]['wireguard_interface']['preshared_key']) }}
+{% if peer_interface['preshared_key'] is defined or
+wg_peer['preshared_key'] is defined %}
+PreSharedKey = {{ peer_interface['preshared_key'] | default(wg_peer['preshared_key'] ) }}
 {% endif %}
-AllowedIPs = {% if wireguard_interface['all_traffic'] | default(false) %}0.0.0.0/0{% else %}{{ hostvars[peer]['wireguard_interface']['address'] }}{% endif %}
+AllowedIPs = {% if wg_peer['all_traffic'] | default(false) %}0.0.0.0/0{% else %}{{ peer_interface['address'] }}{% endif %}
+
+
 {% endfor %}

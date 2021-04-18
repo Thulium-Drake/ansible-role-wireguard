@@ -9,10 +9,23 @@
       changed_when: false
 
 - name: 'Verify'
-  hosts: 'wireguard'
+  hosts: 'wireguard-client2'
   gather_facts: false
   tasks:
     - name: 'Ping over Wireguard'
       shell: |
+        ping -c5 192.168.2.1
+      changed_when: false
+
+- name: 'Verify'
+  hosts: 'wireguard'
+  gather_facts: false
+  tasks:
+    - name: 'Ping wireguard-client over Wireguard'
+      shell: |
         ping -c5 192.168.1.2
+      changed_when: false
+    - name: 'Ping wireguard-client2 over Wireguard'
+      shell: |
+        ping -c5 192.168.2.2
       changed_when: false

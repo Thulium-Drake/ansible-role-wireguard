@@ -11,6 +11,7 @@ platforms:
   - name: "wireguard"
     groups:
       - 'wireguard_vpn_net'
+      - 'wireguard_vpn_net_2'
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian10}-ansible:latest"
     command: '/lib/systemd/systemd'
     pre_build_image: true
@@ -40,26 +41,57 @@ platforms:
     networks:
       - name: 'wgnet'
         ipv4_address: '10.30.55.11'
+  - name: 'wireguard-client2'
+    groups:
+      - 'wireguard_vpn_net_2'
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian10}-ansible:latest"
+    command: '/lib/systemd/systemd'
+    pre_build_image: true
+    volumes:
+      - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+    privileged: true
+    docker_networks:
+      - name: 'wgnet'
+        ipam_config:
+          - subnet: '10.30.55.0/24'
+    networks:
+      - name: 'wgnet'
+        ipv4_address: '10.30.55.12'
 provisioner:
   name: 'ansible'
   inventory:
     host_vars:
       wireguard:
-        wireguard_interface:
-          name: 'wg0'
-          address: '192.168.1.1/24'
-          public_address: '10.30.55.10'
-          listen_port: '51820'
-          private_key: 'wJ9ju51vfSM+X0tqbb7VkWND0brJAD/vxIgbiIJHyXc='
-          peers: "{{ groups['wireguard_vpn_net'] }}"
+        wireguard_interfaces:
+          - name: 'wg0'
+            address: '192.168.1.1/24'
+            public_address: '10.30.55.10'
+            listen_port: '51820'
+            private_key: 'wJ9ju51vfSM+X0tqbb7VkWND0brJAD/vxIgbiIJHyXc='
+            peers: "{{ groups['wireguard_vpn_net'] }}"
+          - name: 'wg1'
+            address: '192.168.2.1/24'
+            public_address: '10.30.55.12'
+            listen_port: '51822'
+            private_key: 'wJERxqxLQtH4YtLE5LsHTB00OUUIyT2iyDm29Dg2ilU='
+            peers: "{{ groups['wireguard_vpn_net_2'] }}"
       wireguard-client:
-        wireguard_interface:
-          name: 'wg0'
-          address: '192.168.1.2/32'
-          private_key: 'mIEFz61y9kFyy+aBjGfiM63TbtqsO9iSZQEBv6fkqlI='
-          preshared_key: '9NPeJ9WVjLLvnG0SHq/L4q4bro/tNh3n17O133TI0SA='
-          all_traffic: true
-          peers:
-            - "{{ groups['wireguard_vpn_net'][0] }}"
+        wireguard_interfaces:
+          - name: 'wg0'
+            address: '192.168.1.2/32'
+            private_key: 'mIEFz61y9kFyy+aBjGfiM63TbtqsO9iSZQEBv6fkqlI='
+            preshared_key: '9NPeJ9WVjLLvnG0SHq/L4q4bro/tNh3n17O133TI0SA='
+            all_traffic: true
+            peers:
+              - "{{ groups['wireguard_vpn_net'][0] }}"
+      wireguard-client2:
+        wireguard_interfaces:
+          - name: 'wg1'
+            address: '192.168.2.2/32'
+            private_key: 'IFxOoppyolQP3efxsLBefc4nwEWIilSq4dg8r1la0mE='
+            preshared_key: 'wHX7WMEkId9k7DhbbewwBojVkMSTYf8/gHri0AAmlgw='
+            all_traffic: true
+            peers:
+              - "{{ groups['wireguard_vpn_net_2'][0] }}"
 verifier:
   name: 'ansible'
