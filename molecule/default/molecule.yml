@@ -44,7 +44,7 @@ provisioner:
   name: 'ansible'
   inventory:
     hosts:
-      - 'localhost'
+      localhost:
     host_vars:
       wireguard:
         wireguard_interface:
