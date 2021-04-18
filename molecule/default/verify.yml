@@ -1,0 +1,18 @@
+---
+- name: 'Verify'
+  hosts: 'wireguard-client'
+  gather_facts: false
+  tasks:
+    - name: 'Ping over Wireguard'
+      shell: |
+        ping -c5 192.168.1.1
+      changed_when: false
+
+- name: 'Verify'
+  hosts: 'wireguard'
+  gather_facts: false
+  tasks:
+    - name: 'Ping over Wireguard'
+      shell: |
+        ping -c5 192.168.1.2
+      changed_when: false

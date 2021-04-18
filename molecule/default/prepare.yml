@@ -1,0 +1,21 @@
+---
+- name: 'Update package sources'
+  hosts: 'all'
+  tasks:
+    - name: 'Update APT cache'
+      apt:
+        update_cache: true
+      when: ansible_facts['os_family'] == 'Debian'
+
+    - name: 'Enable Debian Backports on buster'
+      apt_repository:
+        repo: 'deb http://ftp.nl.debian.org/debian buster-backports main contrib non-free'
+        state: 'present'
+      when:
+        - ansible_facts['distribution_release'] == 'buster'
+        - ansible_facts['os_family'] == 'Debian'
+
+    - name: 'Update YUM cache'
+      yum:
+        update_cache: true
+      when: ansible_facts['os_family'] == 'RedHat'

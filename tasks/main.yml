@@ -1,0 +1,54 @@
+---
+- name: 'Ensure Wireguard userland tools'
+  apt:
+    name:
+      - 'wireguard-tools'
+    install_recommends: false
+
+- name: 'Ensure Wireguard kernel module DKMS package'
+  apt:
+    name:
+      - 'wireguard-dkms'
+    install_recommends: false
+  when:
+    - ansible_facts['virtualization_type'] != 'lxc'
+    - ansible_facts['kernel'] is version('5.6', 'lt')
+
+- name: 'Ensure config snippet dir'
+  file:
+    path: "{{ wireguard_basedir }}/{{ wireguard_interface['name'] }}.conf.d"
+    state: 'directory'
+    mode: 0700
+    owner: 'root'
+    group: 'root'
+
+- name: 'Ensure interface config'
+  template:
+    src: 'interface.conf.j2'
+    dest: "{{ wireguard_basedir }}/{{ wireguard_interface['name'] }}.conf.d/00_interface.conf"
+    mode: 0600
+    owner: 'root'
+    group: 'root'
+
+- name: 'Ensure peer config'
+  template:
+    src: 'peer.conf.j2'
+    dest: "{{ wireguard_basedir }}/{{ wireguard_interface['name'] }}.conf.d/01_peers.conf"
+    mode: 0600
+    owner: 'root'
+    group: 'root'
+
+- name: 'Assemble config file'
+  assemble:
+    dest: "{{ wireguard_basedir }}/{{ wireguard_interface['name'] }}.conf"
+    src: "{{ wireguard_basedir }}/{{ wireguard_interface['name'] }}.conf.d"
+    mode: 0600
+    owner: 'root'
+    group: 'root'
+  notify: 'reload wireguard'
+
+- name: 'Ensure service'
+  service:
+    name: "wg-quick@{{ wireguard_interface['name'] }}"
+    state: 'started'
+    enabled: true

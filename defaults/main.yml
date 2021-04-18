@@ -1,0 +1,22 @@
+---
+# Where to store all configs
+wireguard_basedir: '/etc/wireguard'
+# Define the interface that has to be configured on this system
+# This example is for a server type peer (many to one peer)
+wireguard_interface:
+  name: 'wg0'
+  address: '10.1.1.1/24'
+  public_address: 'wg-server.example.com'
+  listen_port: '51820'
+  private_key: 'wJ9ju51vfSM+X0tqbb7VkWND0brJAD/vxIgbiIJHyXc='     # generate with 'wg genkey' and PROTECT IT!
+  peers: "{{ groups['wireguard_vpn_net'] }}"
+
+# A client peer (one to one peer) looks like this
+# wireguard_interface:
+#   name: 'wg0'
+#   address: '10.1.1.2/32'
+#   private_key: 'mIEFz61y9kFyy+aBjGfiM63TbtqsO9iSZQEBv6fkqlI='   # generate with 'wg genkey' and PROTECT IT!
+#   preshared_key: '9NPeJ9WVjLLvnG0SHq/L4q4bro/tNh3n17O133TI0SA=' # optional, generate with 'wg genpsk' and PROTECT IT!
+#   dns: '10.1.1.1' # optional
+#   all_traffic: true
+#   peers: "{{ groups['wireguard_vpn_net'][0] }}" # use the first system in the group

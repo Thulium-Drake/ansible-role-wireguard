@@ -1,0 +1,64 @@
+---
+dependency:
+  name: 'galaxy'
+driver:
+  name: 'docker'
+lint: |
+  set -e
+  yamllint -c molecule/default/yamllint.yml .
+  ansible-lint molecule/default/converge.yml
+platforms:
+  - name: "wireguard"
+    groups:
+      - 'wireguard_vpn_net'
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian10}-ansible:latest"
+    command: '/lib/systemd/systemd'
+    pre_build_image: true
+    volumes:
+      - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+    privileged: true
+    docker_networks:
+      - name: 'wgnet'
+        ipam_config:
+          - subnet: '10.30.55.0/24'
+    networks:
+      - name: 'wgnet'
+        ipv4_address: '10.30.55.10'
+  - name: 'wireguard-client'
+    groups:
+      - 'wireguard_vpn_net'
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian10}-ansible:latest"
+    command: '/lib/systemd/systemd'
+    pre_build_image: true
+    volumes:
+      - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+    privileged: true
+    docker_networks:
+      - name: 'wgnet'
+        ipam_config:
+          - subnet: '10.30.55.0/24'
+    networks:
+      - name: 'wgnet'
+        ipv4_address: '10.30.55.11'
+provisioner:
+  name: 'ansible'
+  inventory:
+    host_vars:
+      wireguard:
+        wireguard_interface:
+          name: 'wg0'
+          address: '192.168.1.1/24'
+          public_address: '10.30.55.10'
+          listen_port: '51820'
+          private_key: 'wJ9ju51vfSM+X0tqbb7VkWND0brJAD/vxIgbiIJHyXc='
+          peers: "{{ groups['wireguard_vpn_net'] }}"
+      wireguard-client:
+        wireguard_interface:
+          name: 'wg0'
+          address: '192.168.1.2/32'
+          private_key: 'mIEFz61y9kFyy+aBjGfiM63TbtqsO9iSZQEBv6fkqlI='
+          preshared_key: '9NPeJ9WVjLLvnG0SHq/L4q4bro/tNh3n17O133TI0SA='
+          peers:
+            - "{{ groups['wireguard_vpn_net'][0] }}"
+verifier:
+  name: 'ansible'
