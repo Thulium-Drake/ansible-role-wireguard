@@ -2,7 +2,7 @@
 {% for peer in wireguard_interface['peers'] if not peer == inventory_hostname %}
 [Peer]
 # {{ peer }}
-PublicKey = {{ lookup('pipe', 'echo ' + hostvars[peer]['wireguard_interface']['private_key'] | quote + '| /usr/bin/wg pubkey') }}
+PublicKey = {{ lookup('pipe', 'echo ' + hostvars[peer]['wireguard_interface']['private_key'] | quote + ' | /usr/bin/wg pubkey') }}
 {% if wireguard_interface['listen_port'] is not defined %}
 Endpoint = {{ hostvars[peer]['wireguard_interface']['public_address'] }}:{{ hostvars[peer]['wireguard_interface']['listen_port'] }}
 {% endif %}
