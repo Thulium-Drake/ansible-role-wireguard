@@ -5,6 +5,14 @@
       - 'wireguard-tools'
     install_recommends: false
 
+- name: 'Ensure Wireguard userland tools on controller'
+  apt:
+    name:
+      - 'wireguard-tools'
+    install_recommends: false
+  delegate_to: 'localhost'
+  run_once: true
+
 - name: 'Ensure Wireguard kernel module DKMS package'
   apt:
     name:
