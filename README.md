@@ -1,3 +1,5 @@
+[![Build Status](https://drone.element-networks.nl/api/badges/Ansible/role-wireguard/status.svg)](https://drone.element-networks.nl/Ansible/role-wireguard)
+
 # Wireguard
 This role provides a means to configure Wireguard in the following 2 scenarios:
 
