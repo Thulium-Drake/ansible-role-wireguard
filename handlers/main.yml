@@ -10,3 +10,4 @@
   loop: "{{ wireguard_interfaces }}"
   loop_control:
     loop_var: 'wg_int'
+    label: "{{ wg_int['name'] }}"

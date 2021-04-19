@@ -45,6 +45,7 @@
     mode: 0600
     owner: 'root'
     group: 'root'
+  diff: false
   loop: "{{ wireguard_interfaces }}"
   loop_control:
     loop_var: 'wg_int'
@@ -57,6 +58,7 @@
     mode: 0600
     owner: 'root'
     group: 'root'
+  diff: false
   loop: "{{ wireguard_interfaces }}"
   loop_control:
     loop_var: 'wg_peer'
