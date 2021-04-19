@@ -24,3 +24,16 @@ wireguard_interfaces:
 #     traffic_mask: 0.0.0.0/0
 #     peers:
 #       - "{{ groups['wireguard_vpn_net'][0] }}" # use the first system in the group
+
+
+# A client peer (one to one peer) for a site-to-site VPN looks like this
+# wireguard_interface:
+#   - name: 'wg0'
+#     address: '10.1.1.2/32'
+#     private_key: 'mIEFz61y9kFyy+aBjGfiM63TbtqsO9iSZQEBv6fkqlI='   # generate with 'wg genkey' and PROTECT IT!
+#     preshared_key: '9NPeJ9WVjLLvnG0SHq/L4q4bro/tNh3n17O133TI0SA=' # optional, generate with 'wg genpsk' and PROTECT IT!
+#     dns: '10.1.1.1' # optional
+#     traffic_mask: '10.1.1.0/24'         # Traffic mask from this client to the other side
+#     peer_traffic_mask: '192.168.1.0/24' # Traffic mask for 'server' peer to this side
+#     peers:
+#       - "{{ groups['wireguard_vpn_net'][0] }}" # use the first system in the group
