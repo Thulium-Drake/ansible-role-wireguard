@@ -71,7 +71,7 @@ provisioner:
             peers: "{{ groups['wireguard_vpn_net'] }}"
           - name: 'wg1'
             address: '192.168.2.1/24'
-            public_address: '10.30.55.12'
+            public_address: '10.30.55.10'
             listen_port: '51822'
             private_key: 'wJERxqxLQtH4YtLE5LsHTB00OUUIyT2iyDm29Dg2ilU='
             peers: "{{ groups['wireguard_vpn_net_2'] }}"
