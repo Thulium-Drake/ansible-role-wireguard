@@ -3,6 +3,9 @@
 wireguard_basedir: '/etc/wireguard'
 # Define the interface that has to be configured on this system
 # This example is for a server type peer (many to one peer)
+#
+# NOTE: peer relations are based on interface name (give them the same name
+# on both sides)
 wireguard_interfaces:
   - name: 'wg0'
     address: '10.1.1.1/24'
@@ -18,6 +21,6 @@ wireguard_interfaces:
 #     private_key: 'mIEFz61y9kFyy+aBjGfiM63TbtqsO9iSZQEBv6fkqlI='   # generate with 'wg genkey' and PROTECT IT!
 #     preshared_key: '9NPeJ9WVjLLvnG0SHq/L4q4bro/tNh3n17O133TI0SA=' # optional, generate with 'wg genpsk' and PROTECT IT!
 #     dns: '10.1.1.1' # optional
-#     all_traffic: true
+#     traffic_mask: 0.0.0.0/0
 #     peers:
 #       - "{{ groups['wireguard_vpn_net'][0] }}" # use the first system in the group
