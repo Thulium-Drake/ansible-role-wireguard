@@ -34,9 +34,9 @@
     owner: 'root'
     group: 'root'
   loop: "{{ wireguard_interfaces }}"
+  no_log: "{{ wireguard_no_log }}"
   loop_control:
     loop_var: 'wg_int'
-    label: "{{ wg_int['name'] }}"
 
 - name: 'Ensure interface config'
   template:
@@ -45,11 +45,10 @@
     mode: 0600
     owner: 'root'
     group: 'root'
-  diff: false
+  no_log: "{{ wireguard_no_log }}"
   loop: "{{ wireguard_interfaces }}"
   loop_control:
     loop_var: 'wg_int'
-    label: "{{ wg_int['name'] }}"
 
 - name: 'Ensure peer config'
   template:
@@ -58,11 +57,10 @@
     mode: 0600
     owner: 'root'
     group: 'root'
-  diff: false
+  no_log: "{{ wireguard_no_log }}"
   loop: "{{ wireguard_interfaces }}"
   loop_control:
     loop_var: 'wg_peer'
-    label: "{{ wg_peer['name'] }}"
 
 - name: 'Assemble config file'
   assemble:
@@ -71,10 +69,10 @@
     mode: 0600
     owner: 'root'
     group: 'root'
+  no_log: "{{ wireguard_no_log }}"
   loop: "{{ wireguard_interfaces }}"
   loop_control:
     loop_var: 'wg_int'
-    label: "{{ wg_int['name'] }}"
   notify: 'reload wireguard'
 
 - name: 'Ensure service'
@@ -83,6 +81,6 @@
     state: 'started'
     enabled: true
   loop: "{{ wireguard_interfaces }}"
+  no_log: "{{ wireguard_no_log }}"
   loop_control:
     loop_var: 'wg_int'
-    label: "{{ wg_int['name'] }}"

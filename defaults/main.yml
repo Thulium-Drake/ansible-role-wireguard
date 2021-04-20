@@ -1,6 +1,9 @@
 ---
 # Where to store all configs
 wireguard_basedir: '/etc/wireguard'
+
+# Censor output to prevent leakage of secrets
+wireguard_no_log: true
 # Define the interface that has to be configured on this system
 # This example is for a server type peer (many to one peer)
 #
