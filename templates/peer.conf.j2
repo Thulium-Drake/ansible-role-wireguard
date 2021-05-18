@@ -11,7 +11,7 @@ Endpoint = {{ peer_interface['public_address'] }}:{{ peer_interface['listen_port
 wg_peer['preshared_key'] is defined %}
 PreSharedKey = {{ peer_interface['preshared_key'] | default(wg_peer['preshared_key'] ) }}
 {% endif %}
-AllowedIPs = {% if wg_peer['traffic_mask'] is defined %}{{ wg_peer['traffic_mask'] }}{% else %}{{ peer_interface['peer_traffic_mask'] | default(peer_interface['address']) }}{% endif %}
+AllowedIPs = {% if wg_peer['traffic_mask'] is defined %}{{ wg_peer['traffic_mask'] }}{% else %}{{ peer_interface['address'] }}{% if peer_interface['peer_traffic_mask'] is defined %}, {{ peer_interface['peer_traffic_mask'] }}{% endif %}{% endif %}
 
 
 {% endfor %}

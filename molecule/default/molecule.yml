@@ -81,7 +81,7 @@ provisioner:
             address: '192.168.1.2/32'
             private_key: 'mIEFz61y9kFyy+aBjGfiM63TbtqsO9iSZQEBv6fkqlI='
             preshared_key: '9NPeJ9WVjLLvnG0SHq/L4q4bro/tNh3n17O133TI0SA='
-            all_traffic: true
+            traffic_mask: '0.0.0.0/0'
             peers:
               - "{{ groups['wireguard_vpn_net'][0] }}"
       wireguard-client2:
@@ -90,7 +90,8 @@ provisioner:
             address: '192.168.2.2/32'
             private_key: 'IFxOoppyolQP3efxsLBefc4nwEWIilSq4dg8r1la0mE='
             preshared_key: 'wHX7WMEkId9k7DhbbewwBojVkMSTYf8/gHri0AAmlgw='
-            all_traffic: true
+            traffic_mask: '192.168.2.0/24'
+            peer_traffic_mask: '192.168.3.0/24'
             peers:
               - "{{ groups['wireguard_vpn_net_2'][0] }}"
 verifier:
