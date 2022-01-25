@@ -1,6 +1,6 @@
 ---
 - name: 'Ensure Wireguard userland tools and dependencies'
-  apt:
+  ansible.builtin.package:
     name:
       - 'wireguard-tools'
       - 'procps'
@@ -8,26 +8,17 @@
     install_recommends: false
 
 - name: 'Ensure Wireguard userland tools on controller'
-  apt:
+  ansible.builtin.package:
     name:
       - 'wireguard-tools'
     install_recommends: false
   delegate_to: 'localhost'
   run_once: true
   become: true
-  when: wireguard_molecule is not defined # this task does not work in Molecule
-
-- name: 'Ensure Wireguard kernel module DKMS package'
-  apt:
-    name:
-      - 'wireguard-dkms'
-    install_recommends: false
-  when:
-    - ansible_facts['virtualization_type'] != 'lxc'
-    - ansible_facts['kernel'] is version('5.6', 'lt')
+  when: wireguard_molecule is not defined  # this task does not work in Molecule
 
 - name: 'Ensure config snippet dir'
-  file:
+  ansible.builtin.file:
     path: "{{ wireguard_basedir }}/{{ wg_int['name'] }}.conf.d"
     state: 'directory'
     mode: 0700
@@ -39,7 +30,7 @@
     loop_var: 'wg_int'
 
 - name: 'Ensure interface config'
-  template:
+  ansible.builtin.template:
     src: 'interface.conf.j2'
     dest: "{{ wireguard_basedir }}/{{ wg_int['name'] }}.conf.d/00_interface.conf"
     mode: 0600
@@ -51,7 +42,7 @@
     loop_var: 'wg_int'
 
 - name: 'Ensure peer config'
-  template:
+  ansible.builtin.template:
     src: 'peer.conf.j2'
     dest: "{{ wireguard_basedir }}/{{ wg_peer['name'] }}.conf.d/01_peers.conf"
     mode: 0600
@@ -63,7 +54,7 @@
     loop_var: 'wg_peer'
 
 - name: 'Assemble config file'
-  assemble:
+  ansible.builtin.assemble:
     dest: "{{ wireguard_basedir }}/{{ wg_int['name'] }}.conf"
     src: "{{ wireguard_basedir }}/{{ wg_int['name'] }}.conf.d"
     mode: 0600
@@ -76,7 +67,7 @@
   notify: 'reload wireguard'
 
 - name: 'Ensure service'
-  service:
+  ansible.builtin.service:
     name: "wg-quick@{{ wg_int['name'] }}"
     state: 'started'
     enabled: true
