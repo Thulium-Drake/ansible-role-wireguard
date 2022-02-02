@@ -10,7 +10,6 @@
   ansible.builtin.package:
     name:
       - 'wireguard-tools'
-    install_recommends: false
   delegate_to: 'localhost'
   run_once: true
   become: true
