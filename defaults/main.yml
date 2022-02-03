@@ -23,6 +23,7 @@ wireguard_interfaces:
 #     address: '10.1.1.2/32'
 #     private_key: 'mIEFz61y9kFyy+aBjGfiM63TbtqsO9iSZQEBv6fkqlI='   # generate with 'wg genkey' and PROTECT IT!
 #     preshared_key: '9NPeJ9WVjLLvnG0SHq/L4q4bro/tNh3n17O133TI0SA=' # optional, generate with 'wg genpsk' and PROTECT IT!
+#     keepalive_interval: 20  # optional, useful if the peer loses connection behind a NAT firewall
 #     dns: '10.1.1.1' # optional
 #     traffic_mask: 0.0.0.0/0
 #     peers:
