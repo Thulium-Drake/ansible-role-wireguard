@@ -1,11 +1,11 @@
 ---
-- name: 'reload wireguard'
-  service:
+- name: 'Reload wireguard'
+  ansible.builtin.service:
     name: "wg-quick@{{ wg_int['name'] }}"
     state: 'reloaded'
   register: 'reloaded_wireguard'
   until: reloaded_wireguard is successful
-  retries: 3 # When testing with Molecule in Docker, reloading doesn't always go in one go
+  retries: 3  # When testing with Molecule in Docker, reloading doesn't always go in one go
   delay: 5
   no_log: "{{ wireguard_no_log }}"
   loop: "{{ wireguard_interfaces }}"

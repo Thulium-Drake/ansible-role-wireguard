@@ -19,9 +19,9 @@
   ansible.builtin.file:
     path: "{{ wireguard_basedir }}/{{ wg_int['name'] }}.conf.d"
     state: 'directory'
-    mode: 0700
     owner: 'root'
     group: 'root'
+    mode: '0700'
   loop: "{{ wireguard_interfaces }}"
   no_log: "{{ wireguard_no_log }}"
   loop_control:
@@ -31,9 +31,9 @@
   ansible.builtin.template:
     src: 'interface.conf.j2'
     dest: "{{ wireguard_basedir }}/{{ wg_int['name'] }}.conf.d/00_interface.conf"
-    mode: 0600
     owner: 'root'
     group: 'root'
+    mode: '0600'
   no_log: "{{ wireguard_no_log }}"
   loop: "{{ wireguard_interfaces }}"
   loop_control:
@@ -43,9 +43,9 @@
   ansible.builtin.template:
     src: 'peer.conf.j2'
     dest: "{{ wireguard_basedir }}/{{ wg_peer['name'] }}.conf.d/01_peers.conf"
-    mode: 0600
     owner: 'root'
     group: 'root'
+    mode: '0600'
   no_log: "{{ wireguard_no_log }}"
   loop: "{{ wireguard_interfaces }}"
   loop_control:
@@ -55,14 +55,14 @@
   ansible.builtin.assemble:
     dest: "{{ wireguard_basedir }}/{{ wg_int['name'] }}.conf"
     src: "{{ wireguard_basedir }}/{{ wg_int['name'] }}.conf.d"
-    mode: 0600
     owner: 'root'
     group: 'root'
+    mode: '0600'
   no_log: "{{ wireguard_no_log }}"
   loop: "{{ wireguard_interfaces }}"
   loop_control:
     loop_var: 'wg_int'
-  notify: 'reload wireguard'
+  notify: 'Reload wireguard'
 
 - name: 'Ensure service'
   ansible.builtin.service:

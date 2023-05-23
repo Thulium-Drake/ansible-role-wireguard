@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
     - name: 'Ping over Wireguard'
-      shell: |
+      ansible.builtin.shell: |
         ping -c5 192.168.1.1
       changed_when: false
 
@@ -13,7 +13,7 @@
   gather_facts: false
   tasks:
     - name: 'Ping over Wireguard'
-      shell: |
+      ansible.builtin.shell: |
         ping -c5 192.168.2.1
       changed_when: false
 
@@ -22,10 +22,10 @@
   gather_facts: false
   tasks:
     - name: 'Ping wireguard-client over Wireguard'
-      shell: |
+      ansible.builtin.shell: |
         ping -c5 192.168.1.2
       changed_when: false
     - name: 'Ping wireguard-client2 over Wireguard'
-      shell: |
+      ansible.builtin.shell: |
         ping -c5 192.168.2.2
       changed_when: false
