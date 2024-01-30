@@ -3,8 +3,6 @@
   ansible.builtin.package:
     name:
       - 'wireguard-tools'
-      - 'procps'
-      - 'iptables'
 
 - name: 'Ensure Wireguard userland tools on controller'
   ansible.builtin.package:
