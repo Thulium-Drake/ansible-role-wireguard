@@ -11,7 +11,6 @@
   delegate_to: 'localhost'
   run_once: true
   become: true
-  when: wireguard_molecule is not defined  # this task does not work in Molecule
 
 - name: 'Ensure config snippet dir'
   ansible.builtin.file:
