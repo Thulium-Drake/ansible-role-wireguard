@@ -3,11 +3,13 @@
   ansible.builtin.package:
     name:
       - 'wireguard-tools'
+    update_cache: true
 
 - name: 'Ensure Wireguard userland tools on controller'
   ansible.builtin.package:
     name:
       - 'wireguard-tools'
+    update_cache: true
   delegate_to: 'localhost'
   run_once: true
   become: true
