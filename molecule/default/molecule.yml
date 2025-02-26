@@ -55,6 +55,9 @@ platforms:
         ipv4_address: '10.30.55.12'
 provisioner:
   name: 'ansible'
+  config_options:
+    defaults:
+      roles_path: "$MOLECULE_PROJECT_DIRECTORY/.."
   inventory:
     host_vars:
       wireguard:
